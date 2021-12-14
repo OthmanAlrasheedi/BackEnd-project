@@ -13,9 +13,9 @@ const getCoures = async (req, res) => {
 // هنا فنكشن الاضافه
 
 const AddCoures = async (req, res) => {
-  const { name, Description,img, vedio } = req.body;
+  const { name, Description, img, vedio } = req.body;
   const user = req.token.userId;
-  const newCouers = new couress({ name, Description, vedio,img, user });
+  const newCouers = new couress({ name, Description, vedio, img, user });
 
   try {
     const respnse = await newCouers.save();
@@ -32,12 +32,12 @@ const deleteCoures = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
   try {
-    const del = await couress.findOneAndDelete({ _id: id ,user:user});
-    res.status(201).json([del, "delete"]);
+    const del = await couress.findOneAndDelete({ _id: id, user: user });
+    const coers = await couress.find({});
+  res.status(201).json(coers);
   } catch (error) {
     res.send(error);
   }
 };
 
- 
 module.exports = { AddCoures, getCoures, deleteCoures };
