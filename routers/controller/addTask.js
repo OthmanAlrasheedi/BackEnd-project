@@ -15,9 +15,10 @@ const AddTaske = async (req, res) => {
   const { name, Description } = req.body;
   const user = req.token.userId;
   try {
-    const newCouers = new AddTask({ name, Description });
+    const newCouers = new AddTask({ name, Description, user });
 
     const respnse = await newCouers.save();
+
     res.status(200).json(respnse);
   } catch (error) {
     res.send(error);

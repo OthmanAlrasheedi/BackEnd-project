@@ -33,14 +33,12 @@ const Addlike = async (req, res) => {
 const removeLike = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
-  // console.log({ _id: user }, { $push: { LikeCoures: id } });
   try {
     const newLike = await userModel.findOneAndUpdate(
       { _id: user },
-      { $push: { LikeCoures: id } },
+      { $pull: { LikeCoures: id } },
       { new: true }
     );
-    console.log({ _id: user }, { $pull: { LikeCoures: id } });
 
     res.status(201).json(newLike);
   } catch (error) {
@@ -48,4 +46,4 @@ const removeLike = async (req, res) => {
   }
 };
 
-module.exports = { getlike, Addlike ,removeLike};
+module.exports = { getlike, Addlike, removeLike };
