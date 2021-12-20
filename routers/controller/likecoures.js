@@ -40,7 +40,7 @@ const removeLike = async (req, res) => {
       { new: true }
     );
 
-    res.status(201).json(newLike);
+    res.status(200).json(newLike);
   } catch (error) {
     res.send("error");
   }

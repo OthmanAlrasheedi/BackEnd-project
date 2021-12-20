@@ -1,8 +1,9 @@
 const AddTask = require("../../db/module/ListModel");
 
 const getTask = async (req, res) => {
+  user = req.token.userId;
   try {
-    const coures = await AddTask.find({});
+    const coures = await AddTask.findOne({ _id: user });
     res.status(200).json(coures);
   } catch (error) {
     res.send(error);
