@@ -3,7 +3,7 @@ const AddTask = require("../../db/module/ListModel");
 const getTask = async (req, res) => {
   user = req.token.userId;
   try {
-    const coures = await AddTask.findOne({ _id: user });
+    const coures = await AddTask.findOne({ _id: user }).populate("user");
     res.status(200).json(coures);
   } catch (error) {
     res.send(error);
@@ -14,6 +14,7 @@ const getTask = async (req, res) => {
 
 const AddTaske = async (req, res) => {
   const { name, Description } = req.body;
+  console.log(name, Description);
   const user = req.token.userId;
   try {
     const newCouers = new AddTask({ name, Description, user });

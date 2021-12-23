@@ -1,6 +1,8 @@
 const userModel = require("../../db/module/userModel");
 const bcrypt = require("bcrypt");
+const res = require("express/lib/response");
 
+//
 const postSignUp = async (req, res) => {
   let { name, email, password } = req.body;
   try {
