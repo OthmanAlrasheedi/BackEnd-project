@@ -8,7 +8,7 @@ const postSignUp = async (req, res) => {
   try {
     password = await bcrypt.hash(password, 10);
     console.log({ name, email, password, LikeCoures: [] });
-    const newUser = new userModel({ name, email, password, LikeCoures: [] });
+    const newUser = new userModel({ name, email, password, LikeCoures: [],comment:[] });
     const response = await newUser.save();
     res.status(201).json(response);
   } catch (error) {
