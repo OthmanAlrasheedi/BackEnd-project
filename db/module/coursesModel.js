@@ -6,6 +6,7 @@ const coursesModel = new mongoose.Schema({
   vedios: { type: Array },
   img: { type: String },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "userModel" },
+  comment: { type: Array },
 });
 
 module.exports = mongoose.model("coursesModel", coursesModel);

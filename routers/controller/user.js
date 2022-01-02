@@ -40,24 +40,4 @@ const removeuser = async (req, res) => {
   }
 };
 
-const addcomment = async (req, res) => {
-  const { comment } = req.body;
-  const id = req.params.id;
-  const user = req.token.userId;
-  //   console.log({ _id: user }, { $push: { comment: comment } });
-  try {
-    const addcoment = await userModel.findOneAndUpdate(
-      { _id: user },
-      { $push: { comment: comment } },
-      { new: true }
-    );
-    console.log({ _id: user }, { $push: { comment: comment } });
-
-    res.status(201).json(addcoment);
-    console.log(addcoment);
-  } catch (error) {
-    res.send("error");
-  }
-};
-
-module.exports = { getuser, updateinfo, removeuser, addcomment };
+module.exports = { getuser, updateinfo, removeuser };

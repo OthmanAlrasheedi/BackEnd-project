@@ -1,4 +1,6 @@
+const { find } = require("../../db/module/coursesModel");
 const couress = require("../../db/module/coursesModel");
+const userModel = require("../../db/module/userModel");
 
 //  هنا فنكشن الترجيع
 const getCoures = async (req, res) => {
@@ -24,13 +26,18 @@ const getCouresbyID = async (req, res) => {
 
 const AddCoures = async (req, res) => {
   const { name, Description, img, vedio } = req.body;
+  console.log({ name, Description, img, vedio });
   const user = req.token.userId;
-  const newCouers = new couress({ name, Description, vedio, img, user });
-
   try {
-    const respnse = await newCouers.save();
+    const userOthman = await userModel.findOne({ _id: user });
+    if (userOthman.admin == ture) {
+      const newCouers = new couress({ name, Description, vedio, img, user });
+
+      const respnse = await newCouers.save();
+    }
     const coers = await couress.find({});
     res.status(200).json(coers);
+    console.log(coers);
   } catch (error) {
     res.send(error);
   }
@@ -79,6 +86,7 @@ const deleteCoures = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
   try {
+    // const othmanadmin= await userModel.findOne({})
     const del = await couress.findOneAndDelete({ _id: id, user: user });
     const coers = await couress.find({});
     res.status(201).json(coers);
@@ -108,6 +116,54 @@ const putCouresbyID = async (req, res) => {
   }
 };
 
+const addcomment = async (req, res) => {
+  const { comment } = req.body;
+  const { id } = req.params;
+  const user = req.token.userId;
+  const usename = req.token.userName;
+  console.log(id, user, usename, comment);
+  try {
+    const addcoment = await couress
+      .findOneAndUpdate(
+        { _id: id },
+        { $push: { comment: { comment, usename } } },
+        { new: true }
+      )
+      .populate("user");
+
+    res.status(201).json(addcoment);
+    console.log(addcoment);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const delcomment = async (req, res) => {
+  const { comment } = req.body;
+  const id = req.params.id;
+  const user = req.token.userId;
+  const usename = req.token.userName;
+  console.log(id, user, usename, comment);
+  try {
+    const delcoment = await couress
+      .findOneAndUpdate(
+        { _id: id },
+        { $pull: { comment: { comment, usename } } },
+        { new: true }
+      )
+      .populate("user");
+
+    res.status(201).json(delcoment);
+    console.log(delcoment);
+  } catch (error) {
+    res.send(error);
+  }
+};
+const getcomment = async (req, res) => {
+  const id = req.params.id;
+  const getcomm = await couress.find({ _id: id });
+  res.status(200).json(getcomm);
+};
 module.exports = {
   AddCoures,
   getCoures,
@@ -116,4 +172,7 @@ module.exports = {
   getCouresbyID,
   putCouresbyID,
   delVideo,
+  addcomment,
+  getcomment,
+  delcomment,
 };

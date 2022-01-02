@@ -2,8 +2,10 @@ const AddTask = require("../../db/module/ListModel");
 
 const getTask = async (req, res) => {
   user = req.token.userId;
+  const username = req.token.username;
+
   try {
-    const coures = await AddTask.findOne({ _id: user }).populate("user");
+    const coures = await AddTask.find({ user: user });
     res.status(200).json(coures);
   } catch (error) {
     res.send(error);
@@ -16,15 +18,28 @@ const AddTaske = async (req, res) => {
   const { name, Description } = req.body;
   console.log(name, Description);
   const user = req.token.userId;
+  const username = req.token.username;
   try {
-    const newCouers = new AddTask({ name, Description, user });
+    const newCouers = new AddTask({ name, Description, user, username });
 
     const respnse = await newCouers.save();
-
-    res.status(200).json(respnse);
+    const tasks = await AddTask.find({ user: user });
+    res.status(200).json(tasks);
   } catch (error) {
     res.send(error);
   }
 };
 
-module.exports = { AddTaske, getTask };
+const deltask = async (req, res) => {
+  const user = req.token.userId;
+
+  try {
+    const removetask = await AddTask.findOneAndRemove({ user: user });
+    const tasks = await AddTask.find({ user: user });
+
+    res.status(200).json(tasks);
+  } catch (error) {
+    res.send(error);
+  }
+};
+module.exports = { AddTaske, getTask, deltask };
