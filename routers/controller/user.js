@@ -13,13 +13,13 @@ const getuser = async (req, res) => {
 
 const updateinfo = async (req, res) => {
   const user = req.token.userId;
-  let { name, img, password } = req.body;
+  let { name, img, password, bio } = req.body;
   try {
     password = await bcrypt.hash(password, 10);
     console.log(name, img, password);
     const updateinfo = await userModel.findByIdAndUpdate(
       { _id: user },
-      { name, img, password },
+      { name, img, password, bio },
       { new: true }
     );
     console.log(updateinfo);

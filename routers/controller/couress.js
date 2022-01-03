@@ -29,12 +29,10 @@ const AddCoures = async (req, res) => {
   console.log({ name, Description, img, vedio });
   const user = req.token.userId;
   try {
-    const userOthman = await userModel.findOne({ _id: user });
-    if (userOthman.admin == ture) {
       const newCouers = new couress({ name, Description, vedio, img, user });
 
       const respnse = await newCouers.save();
-    }
+    
     const coers = await couress.find({});
     res.status(200).json(coers);
     console.log(coers);
@@ -86,7 +84,6 @@ const deleteCoures = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
   try {
-    // const othmanadmin= await userModel.findOne({})
     const del = await couress.findOneAndDelete({ _id: id, user: user });
     const coers = await couress.find({});
     res.status(201).json(coers);
