@@ -15,7 +15,6 @@ const getlike = async (req, res) => {
 const Addlike = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
-  // console.log({ _id: user }, { $push: { LikeCoures: id } });
   try {
     const newLike = await userModel.findOneAndUpdate(
       { _id: user },

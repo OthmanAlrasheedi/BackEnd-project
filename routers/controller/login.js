@@ -10,9 +10,13 @@ const postLogin = async (req, res) => {
     if (user) {
       const check = await bcrypt.compare(password, user.password);
       if (check === true) {
-        const payload = { userId: user._id, userName: user.name };
+        const payload = {
+          userId: user._id,
+          userName: user.name,
+          admin: user.admin,
+        };
         const token = jwt.sign(payload, "Love71");
-        res.status(200).json({ token });
+        res.status(200).json({ token, payload });
       } else {
         res.status(403).json("wrong PassWord!");
       }
@@ -23,6 +27,5 @@ const postLogin = async (req, res) => {
     res.send(error);
   }
 };
-
 
 module.exports = { postLogin };
