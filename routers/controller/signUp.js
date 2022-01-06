@@ -4,10 +4,10 @@ const res = require("express/lib/response");
 
 //
 const postSignUp = async (req, res) => {
-  let { name, email, password } = req.body;
+  let { name, email, password, admin } = req.body;
   try {
     password = await bcrypt.hash(password, 10);
-    console.log({ name, email, password, LikeCoures: [], admin: true });
+    console.log({ name, email, password, LikeCoures: [], admin });
     const newUser = new userModel({
       name,
       email,

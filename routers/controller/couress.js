@@ -1,4 +1,3 @@
-const { find } = require("../../db/module/coursesModel");
 const couress = require("../../db/module/coursesModel");
 const userModel = require("../../db/module/userModel");
 
@@ -29,12 +28,17 @@ const AddCoures = async (req, res) => {
   console.log({ name, Description, img, vedio });
   const user = req.token.userId;
   try {
+    const useradmin = await userModel.findOne({ _id: user });
+    if (useradmin.admin == true) {
       const newCouers = new couress({ name, Description, vedio, img, user });
 
       const respnse = await newCouers.save();
-    
-    const coers = await couress.find({});
-    res.status(200).json(coers);
+
+      const coers = await couress.find({});
+      res.status(200).json(coers);
+    } else {
+      res.send("Your not admin");
+    }
     console.log(coers);
   } catch (error) {
     res.send(error);
@@ -44,12 +48,18 @@ const AddVideo = async (req, res) => {
   try {
     const { id } = req.params;
     const { vedio } = req.body;
-    const addVed = await couress.findByIdAndUpdate(
-      { _id: id },
-      { $push: { vedios: vedio } },
-      { new: true }
-    );
-    res.status(201).json(addVed);
+    const user = req.token.userId;
+    const useradmin = await userModel.findOne({ _id: user });
+    if (useradmin.admin == true) {
+      const addVed = await couress.findByIdAndUpdate(
+        { _id: id },
+        { $push: { vedios: vedio } },
+        { new: true }
+      );
+      res.status(201).json(addVed);
+    } else {
+      res.send("your not admin");
+    }
   } catch (err) {
     res.send(err);
   }
@@ -68,12 +78,19 @@ const AddVideo = async (req, res) => {
 const delVideo = async (req, res) => {
   try {
     const { id, ele } = req.params;
-    const delVed = await couress.findByIdAndUpdate(
-      { _id: id },
-      { $pull: { vedios: ele } },
-      { new: true }
-    );
-    res.status(200).json(delVed);
+    console.log(id, ele);
+    const user = req.token.userId;
+    const useradmin = await userModel.findOne({ _id: user });
+    if (useradmin.admin == true) {
+      const delVed = await couress.findByIdAndUpdate(
+        { _id: id },
+        { $pull: { vedios: ele } },
+        { new: true }
+      );
+      res.status(200).json(delVed);
+    } else {
+      res.send("your not adimn");
+    }
   } catch (err) {
     res.send(err);
   }
@@ -83,10 +100,16 @@ const delVideo = async (req, res) => {
 const deleteCoures = async (req, res) => {
   const id = req.params.id;
   const user = req.token.userId;
+
   try {
-    const del = await couress.findOneAndDelete({ _id: id, user: user });
-    const coers = await couress.find({});
-    res.status(201).json(coers);
+    const useradmin = await userModel.findOne({ _id: user });
+    if (useradmin.admin == true) {
+      const del = await couress.findOneAndDelete({ _id: id });
+      const coers = await couress.find({});
+      res.status(201).json(coers);
+    } else {
+      res.send("your not admin");
+    }
   } catch (error) {
     res.send(error);
   }
@@ -98,15 +121,19 @@ const putCouresbyID = async (req, res) => {
   const user = req.token.userId;
   console.log(user);
   try {
-    const updacours = await couress.findByIdAndUpdate(
-      { _id: id, user: user },
-      { Description, img },
-      { new: true }
-    );
-    console.log(updacours);
-    const coers = await couress.find({});
-    res.status(200).json(coers);
-
+    const useradmin = await userModel.findOne({ _id: user });
+    if (useradmin.admin == true) {
+      const updacours = await couress.findByIdAndUpdate(
+        { _id: id, user: user },
+        { Description, img },
+        { new: true }
+      );
+      console.log(updacours);
+      const coers = await couress.find({});
+      res.status(200).json(coers);
+    } else {
+      res.send("your not adain");
+    }
     console.log(coers);
   } catch (error) {
     res.send(error);
