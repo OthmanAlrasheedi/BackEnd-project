@@ -31,9 +31,7 @@ const addtest = async (req, res) => {
         );
         console.log(newquestion);
 
-        const addnewquestion = await TestModel1.find({});
-
-        res.status(201).json(addnewquestion);
+        res.status(201).json(addquiz);
       } else {
         const addnewquestion = new TestModel1({ _id: id, quiz: [quiz] });
         const respones = await addnewquestion.save();

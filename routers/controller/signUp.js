@@ -1,19 +1,17 @@
 const userModel = require("../../db/module/userModel");
 const bcrypt = require("bcrypt");
-const res = require("express/lib/response");
 
 //
 const postSignUp = async (req, res) => {
   let { name, email, password, admin } = req.body;
   try {
     password = await bcrypt.hash(password, 10);
-    console.log({ name, email, password, LikeCoures: [], admin });
+    // console.log({ name, email, password, LikeCoures: [], admin });
     const newUser = new userModel({
       name,
       email,
       password,
       LikeCoures: [],
-      comment: [],
       admin: false,
     });
     const response = await newUser.save();

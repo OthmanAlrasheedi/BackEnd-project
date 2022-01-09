@@ -80,6 +80,7 @@ const delVideo = async (req, res) => {
     const { id, ele } = req.params;
     console.log(id, ele);
     const user = req.token.userId;
+    //findOne بالايدي لان الايدي مستحيل يتكرر
     const useradmin = await userModel.findOne({ _id: user });
     if (useradmin.admin == true) {
       const delVed = await couress.findByIdAndUpdate(
@@ -183,6 +184,30 @@ const delcomment = async (req, res) => {
     res.send(error);
   }
 };
+
+// const delcomment = (req, res) => {
+//   const { comment } = req.body;
+//   const id = req.params.id;
+//   // console.log(req.token);
+//   const userId = req.token.userId;
+//   const userName = req.token.userName;
+//   // console.log(userId,userName);
+//   gameModel
+//     .findOneAndUpdate(
+//       { _id: id },
+//       { $pull: { comment: { comment, userName } } },
+//       {
+//         new: true,
+//       }
+//     )
+//     .populate("user")
+//     .then((result) => {
+//       res.send(result);
+//     })
+//     .catch((err) => {
+//       res.send(err);
+//     });
+// };
 const getcomment = async (req, res) => {
   const id = req.params.id;
   const getcomm = await couress.find({ _id: id });
