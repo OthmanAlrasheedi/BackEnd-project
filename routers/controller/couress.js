@@ -142,16 +142,16 @@ const putCouresbyID = async (req, res) => {
 };
 
 const addcomment = async (req, res) => {
-  const { comment } = req.body;
+  const { comment, img } = req.body;
   const { id } = req.params;
   const user = req.token.userId;
   const usename = req.token.userName;
-  console.log(id, user, usename, comment);
+  console.log(id, user, usename, comment, img);
   try {
     const addcoment = await couress
       .findOneAndUpdate(
         { _id: id },
-        { $push: { comment: { comment, usename } } },
+        { $push: { comment: { comment, usename, img } } },
         { new: true }
       )
       .populate("user");
@@ -185,29 +185,6 @@ const delcomment = async (req, res) => {
   }
 };
 
-// const delcomment = (req, res) => {
-//   const { comment } = req.body;
-//   const id = req.params.id;
-//   // console.log(req.token);
-//   const userId = req.token.userId;
-//   const userName = req.token.userName;
-//   // console.log(userId,userName);
-//   gameModel
-//     .findOneAndUpdate(
-//       { _id: id },
-//       { $pull: { comment: { comment, userName } } },
-//       {
-//         new: true,
-//       }
-//     )
-//     .populate("user")
-//     .then((result) => {
-//       res.send(result);
-//     })
-//     .catch((err) => {
-//       res.send(err);
-//     });
-// };
 const getcomment = async (req, res) => {
   const id = req.params.id;
   const getcomm = await couress.find({ _id: id });

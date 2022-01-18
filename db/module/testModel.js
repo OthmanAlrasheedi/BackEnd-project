@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 
 const testeing = new mongoose.Schema({
   couers: { type: mongoose.Schema.Types.ObjectId, ref: "coursesModel" },
-  quiz: {type:Array}
+  quiz: { type: Array },
 });
 
-module.exports = mongoose.model("x  ", testeing);
+module.exports = mongoose.model("testeing", testeing);
 // {
 //     q: { type: String },
 //     s1: { ans: String, Boolean: true },

@@ -11,12 +11,12 @@ const getarti = async (req, res) => {
 };
 
 const addarti = async (req, res) => {
-  const { article } = req.body;
+  const { article, name } = req.body;
   const user = req.token.userId;
   const useradmain = await userModel.findOne({ _id: user });
   try {
     if (useradmain.admin == true) {
-      const newAdd = await addArtical({ article });
+      const newAdd = new addArtical({ article, user, name });
       const saveAdd = await newAdd.save();
       res.status(200).json(saveAdd);
     } else {
@@ -27,4 +27,23 @@ const addarti = async (req, res) => {
   }
 };
 
-module.exports = { addarti, getarti };
+const delarti = async (req, res) => {
+  const user = req.token.userId;
+  const { id } = req.params;
+  console.log(user);
+
+  try {
+    const removetask = await addArtical.findOneAndRemove({
+      user: user,
+      _id: id,
+    });
+    const tasks = await addArtical.find({});
+
+    res.status(200).json(tasks);
+    console.log(tasks);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+module.exports = { addarti, getarti, delarti };

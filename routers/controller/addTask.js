@@ -32,9 +32,10 @@ const AddTaske = async (req, res) => {
 
 const deltask = async (req, res) => {
   const user = req.token.userId;
+  const { id } = req.params;
 
   try {
-    const removetask = await AddTask.findOneAndRemove({ user: user });
+    const removetask = await AddTask.findOneAndRemove({ user: user, _id: id });
     const tasks = await AddTask.find({ user: user });
 
     res.status(200).json(tasks);
