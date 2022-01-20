@@ -1,4 +1,6 @@
 const express = require("express");
+require("dotenv").config();
+
 require("./db/db");
 const app = express();
 app.use(express.json());
@@ -22,7 +24,8 @@ app.use(AddTask);
 app.use(user);
 app.use(Test);
 
-const Port = 5000;
-app.listen(Port, () => {
+console.log(process.env.PORT);
+
+app.listen(5000, () => {
   console.log("server run on 5000 port");
 });

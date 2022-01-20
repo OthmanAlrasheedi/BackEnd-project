@@ -33,14 +33,18 @@ const delarti = async (req, res) => {
   console.log(user);
 
   try {
-    const removetask = await addArtical.findOneAndRemove({
-      user: user,
-      _id: id,
-    });
-    const tasks = await addArtical.find({});
+    const useradmin = await userModel.findOne({ _id: user });
+    if (user.admin == true) {
+      const removetask = await addArtical.findOneAndRemove({
+        _id: id,
+      });
+      const tasks = await addArtical.find({});
 
-    res.status(200).json(tasks);
-    console.log(tasks);
+      res.status(200).json(tasks);
+      console.log(tasks);
+    } else {
+      res.send("you are not Admin");
+    }
   } catch (error) {
     res.send(error);
   }
